@@ -6,8 +6,10 @@ import classes from './Toolbar.module.css';
 const toolbar = (props) => (
   <header className={classes.Toolbar}>
     <div>MENU</div>
-    <BurgerLogo/>
-    <nav>
+    <div className={classes.Logo}>
+      <BurgerLogo/>
+    </div>
+    <nav className={classes.DesktopOnly}>
       <NavigationItems/>
     </nav>
   </header>
