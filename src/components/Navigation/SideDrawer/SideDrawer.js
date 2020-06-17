@@ -9,7 +9,7 @@ const sideDrawer = (props) => {
 
   return(
     <Aux>
-      <Backdrop show={props.open} clicked={props.closed}/>
+      <Backdrop show={props.open} clicked={props.closeHandler}/>
       <div className={[classes.SideDrawer, classes[props.open ? 'Open' : 'Close']].join(' ')}>
         <div className={classes.Logo}>
           <BurgerLogo/>
