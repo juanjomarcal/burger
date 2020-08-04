@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from '../../axios-orders';
+// import axios from '../../axios-orders';
 import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Burger from '../../components/Burger/Burger';
@@ -104,7 +104,7 @@ class BurgerBuilder extends Component {
         this.setState({loading: false, purchasing: false});
         console.log(error);
       });*/
-
+    this.props.history.push('/checkout');
   }
 
   render(){
