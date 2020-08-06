@@ -8,7 +8,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
-import * as actionTypes from '../../store/actions';
+import * as burgerBuilderActions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
 
@@ -96,14 +96,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onIngredientAdded: (ingredientName) => dispatch({
-      type: actionTypes.ADD_INGREDIENT,
-      ingredientName: ingredientName
-    }),
-    onIngredientRemoved: (ingredientName) => dispatch({
-      type: actionTypes.REMOVE_INGREDIENT,
-      ingredientName: ingredientName
-    })
+    onIngredientAdded: (ingredientName) => dispatch(burgerBuilderActions.addIngredient(ingredientName)),
+    onIngredientRemoved: (ingredientName) => dispatch(burgerBuilderActions.removeIngredient(ingredientName))
   }
 }
 
