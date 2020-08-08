@@ -23,7 +23,6 @@ export const authFail = (error) => {
 }
 
 export const logOut = () => {
-  console.log('se lanza logOut');
   return {
     type: actionTypes.AUTH_LOGOUT
   }
