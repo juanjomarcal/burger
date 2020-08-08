@@ -5,6 +5,7 @@ import * as actions from '../../store/actions';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import classes from './Auth.module.css';
 
@@ -40,7 +41,8 @@ class Auth extends Component {
         touched: false
       },
     },
-    formIsValid: false
+    formIsValid: false,
+    isSignUp: true
   }
 
   checkValidity = (value, rules) => {
@@ -75,7 +77,15 @@ class Auth extends Component {
 
   authHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
+  }
+
+  switchAuthModeHandler = () => {
+    this.setState(prevState => {
+      return {
+        isSignUp: !prevState.isSignUp
+      }
+    })
   }
 
   render() {
@@ -87,36 +97,52 @@ class Auth extends Component {
       });
     }
 
-    const form = (
-      <form>
-        {formElements.map((formElement) => (
-          <Input
-            key={formElement.id}
-            elementType={formElement.config.elementType}
-            elementConfig={formElement.config.elementConfig}
-            value={formElement.config.value}
-            invalid={!formElement.config.valid}
-            shouldValidate={formElement.config.validation}
-            touched={formElement.config.touched}
-            changed={(event) => this.inputChangedHandler(event, formElement.id)}
-          />
-        ))}
-        <Button btnType="Success" clicked={this.authHandler} disabled={!this.state.formIsValid}>Submit</Button>
-      </form>
-    );
+    let form = <Spinner />
+    let errorMessage = null;
 
-    return (
-      <div className={classes.Auth}>
-        {form}
-      </div>
-    );
+    if(this.props.error){
+      errorMessage = (<p>{this.props.error.message}</p>);
+    }
+
+    if(!this.props.loading){
+      form = (
+        <div className={classes.Auth}>
+          {errorMessage}
+          <form>
+            {formElements.map((formElement) => (
+              <Input
+                key={formElement.id}
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                invalid={!formElement.config.valid}
+                shouldValidate={formElement.config.validation}
+                touched={formElement.config.touched}
+                changed={(event) => this.inputChangedHandler(event, formElement.id)}
+              />
+            ))}
+            <Button btnType="Success" clicked={this.authHandler} disabled={!this.state.formIsValid}>SUBMIT</Button>
+          </form>
+          <Button btnType="Danger" clicked={this.switchAuthModeHandler}>SWITCH TO {this.state.isSignUp ? 'SIGNIN' : 'SIGNUP'}</Button>
+        </div>
+      );
+    }
+
+    return form;
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth(email, password))
+    onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

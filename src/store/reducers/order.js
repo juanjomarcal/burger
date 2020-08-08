@@ -4,7 +4,8 @@ import { updateObject } from '../utility';
 const initialState = {
   orders: [],
   loading: false,
-  purchased: false
+  purchased: false,
+  error: false
 }
 
 const purchaseInit = (state, action) => {
@@ -51,7 +52,8 @@ const fetchOrdersSuccess = (state, action) => {
 
 const fetchOrdersFail = (state, action) => {
   return updateObject(state, {
-    loading: false
+    loading: false,
+    error: action.error
   });
 }
 
