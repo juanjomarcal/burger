@@ -5,7 +5,7 @@ import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 
-import * as contactDataActions from '../../../store/actions';
+import * as actions from '../../../store/actions';
 
 import classes from './ContactData.module.css';
 
@@ -189,7 +189,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPurchaseBurger: (orderData) => dispatch(contactDataActions.purchaseBurger(orderData))
+    onPurchaseBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
   }
 }
 
