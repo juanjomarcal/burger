@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import * as actions from '../../store/actions';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -52,34 +53,21 @@ class Auth extends Component {
     }
   }
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if(rules.required){
-      isValid = (value.trim() !== '' && isValid);
-    }
-    if(rules.minLenght){
-      isValid = (value.length >= rules.minLenght && isValid);
-    }
-    if(rules.maxLenght){
-      isValid = (value.length <= rules.maxLenght && isValid);
-    }
-    return isValid;
-  }
-
   inputChangedHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = { ...this.state.controls }
-    const updatedFormElement = { ...updatedOrderForm[inputIdentifier] }
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    const updatedControls = updateObject(this.state.controls, {
+      [inputIdentifier]: updateObject(this.state.controls[inputIdentifier], {
+          value: event.target.value,
+          valid: checkValidity(event.target.value, this.state.controls[inputIdentifier].validation),
+          touched: true
+      })
+    });
 
     let formIsValid = true;
-    for(let inputIdentifier in updatedOrderForm){
-      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+    for(let inputIdentifier in updatedControls){
+      formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
     }
 
-    this.setState({controls: updatedOrderForm, formIsValid: formIsValid});
+    this.setState({controls: updatedControls, formIsValid: formIsValid});
   }
 
   authHandler = (event) => {
@@ -113,7 +101,6 @@ class Auth extends Component {
 
     let redirect = null;
     if(this.props.isAuth){
-      console.log('Redirect to: ', this.props.authRedirectPath);
       redirect = <Redirect to={this.props.authRedirectPath} />
     }
 

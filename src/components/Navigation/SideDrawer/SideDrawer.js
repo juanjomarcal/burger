@@ -9,13 +9,13 @@ const sideDrawer = (props) => {
 
   return(
     <Aux>
-      <Backdrop show={props.open} clicked={props.closeHandler}/>
-      <div className={[classes.SideDrawer, classes[props.open ? 'Open' : 'Close']].join(' ')}>
+      <Backdrop show={props.open} clicked={props.closeHandler} />
+      <div className={[classes.SideDrawer, classes[props.open ? 'Open' : 'Close']].join(' ')} onClick={props.closeHandler}>
         <div className={classes.Logo}>
-          <BurgerLogo/>
+          <BurgerLogo />
         </div>
         <nav>
-          <NavigationItems isAuth={props.isAuth}/>
+          <NavigationItems isAuth={props.isAuth} />
         </nav>
       </div>
     </Aux>
